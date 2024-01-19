@@ -1,0 +1,38 @@
+import csv
+
+# Step 1: Download the CSV file manually from the provided link
+
+# Step 2: Read the CSV file and determine column meanings
+with open(r'C:\Users\Alysv\Downloads\city-of-seattle-2012-expenditures-dollars.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file)
+
+    # Print header row to see column names
+    print(csv_reader.fieldnames)
+
+    # Identify important columns (e.g., 'Department', '2012 Actual')
+
+# Step 3: Aggregate expenses by department using a dictionary
+expenses_by_department = {}
+
+with open(r'C:\Users\Alysv\Downloads\city-of-seattle-2012-expenditures-dollars.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file)
+
+    for row in csv_reader:
+        department = row['Department']
+        expense_str = row['2012 Actual'].replace(',', '').replace('$', '')
+
+        # Check if the string is not empty before converting to float
+        if expense_str:
+            expenses = float(expense_str)
+        else:
+            expenses = 0.0  # Set to zero if the value is empty or non-numeric
+
+        if department in expenses_by_department:
+            expenses_by_department[department] += expenses
+        else:
+            expenses_by_department[department] = expenses
+
+# Step 4: Print results
+for department, total_expenses in expenses_by_department.items():
+    formatted_expenses = "${:,.2f}".format(total_expenses)
+    print(f"{department}\t{formatted_expenses}")
